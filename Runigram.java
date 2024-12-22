@@ -84,9 +84,9 @@ public class Runigram {
 	public static Color[][] flippedHorizontally(Color[][] image) {
 		//// Replace the following statement with your code
 		Color[][] flippedH = new Color[image.length][image[0].length];
-		for(int j = 0; j < image[0].length; j++){
-			for(int i = 0; i < image.length; i++){
-				flippedH[i][image.length - 1 - j] = image[i][j];
+		for(int i = 0; i < image.length; i++){
+			for(int j = 0; j < image[0].length; j++){
+			flippedH[i][image[0].length - 1 - j] = image[i][j];
 			}
 		}	
 		return flippedH;
@@ -159,7 +159,14 @@ public class Runigram {
 	 */
 	public static Color blend(Color c1, Color c2, double alpha) {
 		//// Replace the following statement with your code
-		return null;
+		int red1 = c1.getRed();
+		int green1 = c1.getGreen();
+		int blue1 = c1.getBlue();
+		int red2 = c2.getRed();
+		int green2 = c2.getGreen();
+		int blue2 = c2.getBlue();
+		Color blended = new Color((int)(alpha * red1 + (1 - alpha) * red2), (int)(alpha * green1 + (1 - alpha) * green2), (int)(alpha * blue1 + (1 - alpha) * blue2));
+		return blended;
 	}
 	
 	/**
@@ -170,7 +177,13 @@ public class Runigram {
 	 */
 	public static Color[][] blend(Color[][] image1, Color[][] image2, double alpha) {
 		//// Replace the following statement with your code
-		return null;
+		Color[][] blended = new Color[image1.length][image1[0].length];
+		for(int i = 0; i < image1.length; i++){
+			for(int j = 0; j < image1[0].length; j++){
+				blended[i][j] = blend(image1[i][j], image2[i][j], alpha);
+			}
+		}	
+		return blended;
 	}
 
 	/**
@@ -181,6 +194,14 @@ public class Runigram {
 	 */
 	public static void morph(Color[][] source, Color[][] target, int n) {
 		//// Replace this comment with your code
+		target = scaled(target, source[0].length, source.length);
+		for(int step = 0; step <= n; step++){
+			double alpha = (double) step / n;
+			Color[][] blendedImage = blend(source, target, alpha);
+			setCanvas(blendedImage);
+			display(blendedImage);
+			StdDraw.pause(500);
+		}
 	}
 	
 	/** Creates a canvas for the given image. */
